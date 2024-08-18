@@ -1,0 +1,48 @@
+let secondsRemaining;
+let intervalHandle;
+
+const resetPage = () => {
+    document.getElementById("inputArea").style.display = "block";
+};
+
+const tick = () => {
+    const timeDisplay = document.getElementById("time");
+    const min = Math.floor(secondsRemaining / 60);
+    let sec = secondsRemaining % 60;
+
+    sec = sec < 10 ? `0${sec}` : sec;
+    timeDisplay.innerHTML = `${min}:${sec}`;
+
+    if (secondsRemaining === 0) {
+        alert("Done!");
+        clearInterval(intervalHandle);
+        resetPage();
+    }
+    secondsRemaining--;
+};
+
+const startCountdown = () => {
+    const minutes = document.getElementById("minutes").value;
+    if (isNaN(minutes)) {
+        alert("Please enter a number!");
+        return;
+    }
+    secondsRemaining = minutes * 60;
+    intervalHandle = setInterval(tick, 1000);
+    document.getElementById("inputArea").style.display = "none";
+};
+
+window.onload = () => {
+    const inputMinutes = document.createElement("input");
+    inputMinutes.id = "minutes";
+    inputMinutes.type = "text";
+
+    const startButton = document.createElement("input");
+    startButton.type = "button";
+    startButton.value = "Start Countdown";
+    startButton.onclick = startCountdown;
+
+    const inputArea = document.getElementById("inputArea");
+    inputArea.appendChild(inputMinutes);
+    inputArea.appendChild(startButton);
+};
